@@ -19,35 +19,57 @@ function init() {
         [
             {
                 type: 'input',
-                name: 'manager',
+                name: 'managerName',
                 message: 'Enter manager name:'
             },
             {
-                type: 'input',
-                name: 'id',
-                message: 'Enter manager id:'
+                type: 'number',
+                name: 'managerId',
+                message: 'Enter manager id:',
+                validate: (input) => {
+                    if (isNaN(input)) {
+                        return 'Not a number, please re-enter!'
+                    }
+                    return true;
+                }
             },
             {
                 type: 'input',
-                name: 'email',
+                name: 'managerEmail',
                 message: 'Enter manager email:'
+            },
+            {
+                type: 'number',
+                name: 'managerOfficeNumber',
+                message: 'Enter manager office number:',
+                validate: (input) => {
+                    if (isNaN(input)) {
+                        return 'Not a number, please re-enter!'
+                    }
+                    return true;
+                }
             },
 
         ]
     )
     .then((ans) => {
-            inquirer
+
+
+
+        (addEmployee = async () => {
+            await inquirer
             .prompt(
                 [
                     {
-                        type: 'confirm',
+                        type: 'list',
                         name: 'extraEmployee',
                         message: 'Add additional employee?',
+                        choices: ['Yes', 'No']
                     },
                 ]
             )
             .then((ans) => {
-                if (ans.extraEmployee === false) {
+                if (ans.extraEmployee === 'No') {
                     return;
                 } else {
                     inquirer
@@ -62,19 +84,54 @@ function init() {
                         ]
                     )
                     .then((ans) => {
+                        const title = ans.employeeTitle.toLowerCase();
                         inquirer
                         .prompt(
                             [
                                 {
                                     type: 'input',
-                                    name: `${(ans.employeeTitle).toLowerCase()}Name`,
-                                    message: `What's the ${(ans.employeeTitle).toLowerCase()} name?`
+                                    name: `${title}Name`,
+                                    message: `What's the ${title} name?`
+                                },
+                                {
+                                    type: 'input',
+                                    name: `${title}Id`,
+                                    message: `What's the ${title} id?`
+                                },
+                                {
+                                    type: 'input',
+                                    name: `${title}Name`,
+                                    message: `What's the ${title} email?`
+                                },
+                                {
+                                    type: 'input',
+                                    name: 'github',
+                                    message: `What's the ${title} github?`,
+                                    when: () => {
+                                        if (title === 'engineer') {
+                                            return true;
+                                        }
+                                    }
+                                },
+                                {
+                                    type: 'input',
+                                    name: 'school',
+                                    message: `What school did the ${title} attend?`,
+                                    when: () => {
+                                        if (title === 'intern') {
+                                            return true;
+                                        }
+                                    }
                                 }
                             ]
                         )
+                        .then(() => {
+                            addEmployee();
+                        })
                     })
                 }
             })
+        })();
     })
 }
 
