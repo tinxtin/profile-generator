@@ -12,7 +12,7 @@ const render = require("./src/page-template.js");
 
 
 // TODO: Write Code to gather information about the development team members, and render the HTML file.
-
+const team = [];
 function init() {
     inquirer
     .prompt(
@@ -53,8 +53,8 @@ function init() {
         ]
     )
     .then((ansManager) => {
-        const manager = new Manager(ansManager.name, ansManager.id, ansManager.mail, ansManager.officeNumber);
-
+        const manager = new Manager(ansManager.name, ansManager.id, ansManager.email, ansManager.officeNumber);
+        team.push(manager);
         (addEmployee = async () => {
             await inquirer
             .prompt(
@@ -69,7 +69,7 @@ function init() {
             )
             .then((ansExtra) => {
                 if (ansExtra.extraEmployee === 'Finish team') {
-                    return;
+                    fs.writeFile('../index.html', render(team), (err) => err && console.error(err));
                 } else {
                     const title = ansExtra.extraEmployee.toLowerCase();
                     inquirer
@@ -114,11 +114,11 @@ function init() {
                     )
                     .then((ansEmployee) => {
                         if (ansExtra.extraEmployee === 'Engineer') {
-                            const engineer = new Engineer(ansEmployee.name, ansEmployee.id, ansEmployee.email, ansEmployee.github)
-                            console.log(engineer)
+                            const engineer = new Engineer(ansEmployee.name, ansEmployee.id, ansEmployee.email, ansEmployee.github);
+                            team.push(engineer);
                         } else {
-                            const intern = new Intern(ansEmployee.name, ansEmployee.id, ansEmployee.email, ansEmployee.school)
-                            console.log(intern)
+                            const intern = new Intern(ansEmployee.name, ansEmployee.id, ansEmployee.email, ansEmployee.school);
+                            team.push(intern)
                         }
                         addEmployee();
                     })
