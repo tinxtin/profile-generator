@@ -1,7 +1,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 # Profile-generator
 
-[View Demo]('')
+[View Demo](https://tinxtin.github.io/profile-generator/)
 
 <details>
     <summary>Table of Contents</summary>
